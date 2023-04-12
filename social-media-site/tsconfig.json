@@ -1,0 +1,21 @@
+{
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "env.d.ts"],
+  "compilerOptions": {
+    "module": "ES2020",
+    "moduleResolution": "node",
+    "types": ["@babel/types"],
+    "typeRoots": ["node_modules/@babel/types"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
+    "lib": ["es2020", "dom"],
+  },
+
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}
