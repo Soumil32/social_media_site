@@ -22,18 +22,20 @@ export default {
     };
   },
   methods: {
-    login() {
+    async login() {
       const userName: String = this.userName;
       const password: String = this.password;
-      axios.post('http://localhost:3000/login', {
-        userName: userName,
-        password: password
-      }).then((response) => {
-        console.log(response.data);
+      try {
+        const response = await axios.post('http://localhost:3000/login', {
+          userName: userName,
+          password: password
+        })
         localStorage.setItem('token', response.data.token);
-      }).catch((error) => {
+      } catch (error) {
         console.log(error);
-      });
+      }
+      // navigate to home page
+      this.$router.push({ name: 'HomeView' });
     },
   },
 };
