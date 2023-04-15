@@ -24,15 +24,22 @@ app.use(cors({
 }));
 
 function authenticateToken(req, res, next) {
-    // Retrieve token from request headers
-    const token = req.body.headers['Authorization'].replace('Bearer ', '');
+    let token;
+    try {
+        // Retrieve token from request headers
+        token = req.body.headers['Authorization'].replace('Bearer ', '');
+    } catch (error) {
+        // Token not found
+        console.log('error in token retrieval');
+        return res.status(401).json({message: 'Token not found'});
+    }
 
     // Verify and decode token
     jwt.verify(token, process.env.LOGIN_TOKEN_KEY, (err, user) => {
         if (err) {
             // Token verification failed
             console.log('error in token verification');
-            return res.sendStatus(401);
+            return res.status(403).json({message: 'Invalid token'});
         }
 
         // Token verification successful
