@@ -1,9 +1,9 @@
 <template>
   <!-- main social media page. a list of the last 20 posts -->
-  <div class="posts">
-    <div class="post" v-for="(post,_,i) in posts" :key="i">
-      <h1>{{post.title}}</h1>
-      <p>{{post.content}}</p>
+  <div class="grid gap-4 grid-cols-1">
+    <div class="w-1/2 bg-white rounded overflow-hidden shadow-lg mx-auto mb-4" v-for="(post, i) in posts" :key="i">
+      <h1 class="font-bold text-xl mb-1">{{post.title}}</h1><br>
+      <p class="text-gray-700 text-base mb-2">{{post.content}}</p>
     </div>
   </div>
 </template>
