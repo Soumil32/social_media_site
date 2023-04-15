@@ -1,6 +1,6 @@
 <template>
   <!-- main social media page. a list of the last 20 posts -->
-  <div class="home">
+  <div class="posts">
     <div class="post" v-for="(post,_,i) in posts" :key="i">
       <h1>{{post.title}}</h1>
       <p>{{post.content}}</p>
