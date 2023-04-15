@@ -1,9 +1,10 @@
 <template>
   <!-- main social media page. a list of the last 20 posts -->
-  <div class="grid gap-4 grid-cols-1">
-    <div class="w-1/2 bg-white rounded overflow-hidden shadow-lg mx-auto mb-4" v-for="(post, i) in posts" :key="i">
-      <h1 class="font-bold text-xl mb-1">{{post.title}}</h1><br>
-      <p class="text-gray-700 text-base mb-2">{{post.content}}</p>
+  <div class="flex gap-4 flex-col content-center">
+    <div class="w-1/2 bg-white rounded overflow-hidden shadow-lg mx-auto mb-4 pl-2 pr-1" v-for="(post, i) in posts" :key="i">
+      <div class="font-bold text-xl mb-2">{{post.title}} <!--suppress TypeScriptUnresolvedReference -->
+        <div class="text-gray-400 text-sm">{{post.userName}}</div></div>
+      <p class="text-gray-700 text-base mb-2 ">{{post.content}}</p>
     </div>
   </div>
 </template>
