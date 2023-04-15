@@ -66,9 +66,7 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/get-posts', authenticateToken, async (req, res) => {
-    console.log('fetching posts');
     const allPosts = client.db("social_media_demo").collection("posts");
-    console.log('posts fetched');
     const result = await allPosts.find().toArray();
     res.status(200).json({message: 'Posts fetched successfully', posts: result});
 });
