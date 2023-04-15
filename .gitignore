@@ -1,4 +1,5 @@
-/social_media_backend/node_modules/.bin/acorn
+/social_media_backend/node_modules/
+/social_media_backend/.env
 /social_media_backend/node_modules/.bin/acorn.cmd
 /social_media_backend/node_modules/.bin/acorn.ps1
 /social_media_backend/node_modules/.bin/mime

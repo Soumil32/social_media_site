@@ -1,15 +1,13 @@
 const express = require('express');
-const router = express.Router();
+require('dotenv').config();
 const {MongoClient} = require('mongodb');
-const createError = require('http-errors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const logger = require('morgan');
 const jwt = require('jsonwebtoken');
 const app = express();
-const uri = 'mongodb+srv://soumil:ZSAtXEzDxsReUtko@foodshoptest.ldwt5pj.mongodb.net/?retryWrites=true&w=majority'
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const client = new MongoClient(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -30,7 +28,7 @@ function authenticateToken(req, res, next) {
     const token = req.body.headers['Authorization'].replace('Bearer ', '');
 
     // Verify and decode token
-    jwt.verify(token, 'social_media_demo', (err, user) => {
+    jwt.verify(token, process.env.LOGIN_TOKEN_KEY, (err, user) => {
         if (err) {
             // Token verification failed
             console.log('error in token verification');
@@ -63,8 +61,7 @@ app.post('/login', async (req, res) => {
     const result = await allAccounts.findOne(account);
     if (!result) { res.status(401).json({message: 'Invalid credentials'}); return }
     const payload = {userName: userName};
-    const key = 'social_media_demo';
-    const token = jwt.sign(payload, key, {expiresIn: '24h'});
+    const token = jwt.sign(payload, process.env.LOGIN_TOKEN_KEY, {expiresIn: '24h'});
     res.status(200).json({message: 'Login successful', token});
 });
 
