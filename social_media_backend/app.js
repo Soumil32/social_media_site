@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 require('dotenv').config();
 const {MongoClient} = require('mongodb');
 const path = require('path');
@@ -30,7 +31,12 @@ function authenticateToken(req, res, next) {
         token = req.body.headers['Authorization'].replace('Bearer ', '');
     } catch (error) {
         // Token not found
-        console.log('error in token retrieval');
+        console.log(error);
+        return res.status(401).json({message: 'Token not found'});
+    }
+
+    if (!token) {
+        // Token not found
         return res.status(401).json({message: 'Token not found'});
     }
 
@@ -39,7 +45,7 @@ function authenticateToken(req, res, next) {
         if (err) {
             // Token verification failed
             console.log('error in token verification');
-            return res.status(403).json({message: 'Invalid token'});
+            return res.status(403).json({message: 'Invalid token. Please login again'});
         }
 
         // Token verification successful
@@ -54,7 +60,12 @@ function authenticateToken(req, res, next) {
 app.post('/create-user', async (req, res) => {
     const allAccounts = client.db("social_media_demo").collection("accounts");
     const {userName, password} = req.body;
-    const account = {userName, password};
+    // Hash the password
+    const saltRounds = 10;
+    console.log('before hash', password)
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    console.log('after hash', hashedPassword)
+    const account = {userName, password: hashedPassword};
     const result = await allAccounts.insertOne(account);
     // return whether the request successful or not
     result ? res.status(200).json({message: 'Account created successfully'}) : res.status(500).json({message: 'Account creation failed'});
@@ -64,9 +75,14 @@ app.post('/create-user', async (req, res) => {
 app.post('/login', async (req, res) => {
     const allAccounts = client.db("social_media_demo").collection("accounts");
     const {userName, password} = req.body;
-    const account = {userName, password};
-    const result = await allAccounts.findOne(account);
-    if (!result) { res.status(401).json({message: 'Invalid credentials'}); return }
+    const hashedPassword = (await allAccounts.findOne({userName: userName})).password;
+    bcrypt.compare(password, hashedPassword).then((result) => {
+        console.log(result);
+        if (!result) { res.status(401).json({message: 'Invalid credentials'});}
+    }).catch((error) => {
+        console.log(error);
+        res.status(500).json({message: 'Internal server error'});
+    });
     const payload = {userName: userName};
     const token = jwt.sign(payload, process.env.LOGIN_TOKEN_KEY, {expiresIn: '24h'});
     res.status(200).json({message: 'Login successful', token});
