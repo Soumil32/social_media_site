@@ -1,6 +1,6 @@
 <template>
   <!-- main social media page. a list of the last 20 posts -->
-  <div class="flex gap-4 flex-col content-center">
+  <div class="flex gap-4 flex-col content-center items-center">
     <div class="w-1/2 bg-white rounded overflow-hidden shadow-lg mx-auto mb-4 pl-2 pr-1" v-for="(post, i) in posts" :key="i">
       <div class="font-bold text-xl mb-2">{{post.title}} <!--suppress TypeScriptUnresolvedReference -->
         <div class="text-gray-400 text-sm">{{post.userName}}</div></div>

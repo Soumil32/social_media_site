@@ -35,7 +35,6 @@ export default {
         console.log(error);
       }
       // navigate to home page
-      this.$router.push({ name: 'HomeView' });
     },
   },
 };

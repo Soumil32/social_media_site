@@ -25,12 +25,9 @@ export default {
     createAccount() {
       const userName: String = this.userName;
       const password: String = this.password;
-      axios.post('http://localhost:3000/create-account', {
+      axios.post('http://localhost:3000/create-user', {
         userName: userName,
         password: password
-      }).then((response) => {
-        console.log(response.data);
-        localStorage.setItem('token', response.data.token);
       }).catch((error) => {
         console.log(error);
       });
