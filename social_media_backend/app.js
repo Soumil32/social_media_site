@@ -103,4 +103,8 @@ app.post('/create-post', authenticateToken, async (req, res) => {
     result ? res.status(200).json({message: 'Post created successfully'}) : res.status(500).json({message: 'Post creation failed'});
 });
 
+app.post('/validate-token', authenticateToken, (req, res) => {
+    res.status(200).json({message: 'Token valid'});
+});
+
 module.exports = app;
