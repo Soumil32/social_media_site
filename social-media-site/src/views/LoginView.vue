@@ -13,6 +13,8 @@
 
 <script lang="ts">
 import axios from "axios";
+import { userInfoStore} from "@/stores/counter";
+
 export default {
   name: "LoginView",
   data() {
@@ -23,6 +25,7 @@ export default {
   },
   methods: {
     async login() {
+      const store = userInfoStore();
       const userName: String = this.userName;
       const password: String = this.password;
       try {
@@ -31,6 +34,7 @@ export default {
           password: password
         })
         localStorage.setItem('token', response.data.token);
+        store.changeLoginStatus();
       } catch (error) {
         console.log(error);
       }
