@@ -15,12 +15,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Configure CORS to allow requests from 'http://localhost:5173'
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'http://localhost:8000',
     optionsSuccessStatus: 200 // some legacy browsers (e.g., IE11) choke on 204
 }));
 
