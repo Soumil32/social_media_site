@@ -1,12 +1,26 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import axios from "axios";
 
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
-  }
+let validToken;
+axios.post('http://localhost:3000/validate-token', {
+    headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+    }
+}).then((response) => {
+    validToken = true; // if the server responds with a 200 status code, the token is valid
+}).catch((error) => {
+    validToken = false; // if the server responds with a 401 status code, the token is invalid
+})
 
-  return { count, doubleCount, increment }
+export const userInfoStore = defineStore('userInfo', {
+  state: () => ({ _loggedIn: validToken }),
+    getters: {
+    isLoggedin: state => state._loggedIn,
+  },
+  actions: {
+    changeLoginStatus() {
+      this._loggedIn = !this._loggedIn
+    }
+  },
 })
