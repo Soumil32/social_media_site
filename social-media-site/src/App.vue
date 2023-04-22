@@ -1,19 +1,42 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+const store = userInfoStore()
 </script>
 
 <script lang="ts">
+
+import { userInfoStore } from "@/stores/counter";
+
 export default  {
   data() {
     return {
-      links: [
-        { to: '/', text: 'Home' },
-        { to: '/create-post', text: 'Create Post' },
-        { to: '/create-account', text: 'Create Account' },
-        { to: '/login', text: 'Login' },
-      ]
+        store: userInfoStore(),
     }
   },
+  methods: {
+    logout() {
+      localStorage.removeItem('token');
+      this.store.changeLoginStatus();
+    }
+  },
+  computed: {
+    links() {
+      if(this.store.isLoggedin) {
+          return [
+              { to: '/', text: 'Home' },
+              { to: '/create-post', text: 'Create Post' },
+          ]
+      }
+      else {
+          return [
+              { to: '/', text: 'Home' },
+              { to: '/create-post', text: 'Create Post' },
+              { to: '/create-account', text: 'Create Account' },
+              { to: '/login', text: 'Login' },
+          ]
+      }
+    }
+  }
 }
 </script>
 
@@ -25,6 +48,9 @@ export default  {
         class="gradient-text hover:underline hover:from-red-500 hover:to-yellow-500">
           {{link.text}}
       </RouterLink>
+
+      <button v-if="store.isLoggedin" @click="logout"
+              class="gradient-text hover:underline hover:from-red-500 hover:to-yellow-500">Logout</button>
     </div>
   </div>
   <RouterView/>
