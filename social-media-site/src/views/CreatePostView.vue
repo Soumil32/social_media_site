@@ -1,12 +1,13 @@
 <template>
-  <div class="create-post">
-    <h1>Create Post</h1>
-    <form>
-      <label for="title">Title</label>
-      <input type="text" id="title" v-model="title" />
+  <div class="flex justify-center">
+    <form id="create-post" class="flex flex-col flex-grow gap-4 w-3/4 items-center">
+      <label for="title" class="items-center">Title</label>
+      <input type="text" id="title" class="" v-model="title" />
       <label for="content">Content</label>
       <input type="text" id="content" v-model="content" />
-      <button @click.prevent="createPost">Create Post</button>
+      <div class="bg-blue-500">
+        <button id="post-btn" class="bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 border border-gray-200" @click.prevent="createPost">Create Post</button>
+      </div>
     </form>
   </div>
 </template>
@@ -44,5 +45,7 @@ export default {
 </script>
 
 <style scoped>
-
+#post-btn {
+    backdrop-filter: blur(100px);
+}
 </style>
