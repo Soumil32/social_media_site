@@ -90,6 +90,7 @@ app.post('/login', async (req, res) => {
     const {userName, password} = req.body;
     let hashedPassword;
     allAccounts.findOne({userName: userName}).then((result) => {
+        if (!result) { res.status(401).json({message: 'Invalid credentials'});}
         hashedPassword = result.password;
     }).catch((error) => {
         console.log(error);
