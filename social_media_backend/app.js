@@ -63,9 +63,11 @@ app.post('/create-user', async (req, res) => {
     const {userName, password, accessCode} = req.body;
     // check if the username already exists
     const existingAccount = await allAccounts.findOne({userName: userName});
+    console.log(existingAccount);
     if (existingAccount) {
         return res.status(401).json({message: 'Username already exists'});
     }
+    console.log(accessCodes);
     // check if the access code is in the access codes array
     if (!accessCodes.includes(accessCode)) {
         return res.status(401).json({message: 'Invalid access code'});
