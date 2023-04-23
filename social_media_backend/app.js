@@ -105,6 +105,9 @@ app.post('/validate-token', authenticateToken, (req, res) => {
     res.status(200).json({message: 'Token valid'});
 });
 
+app.get('/verify-server', (req, res) => {
+    res.status(200).json({message: 'Server is up and running'});
+}); // this is to verify that the server is up and running
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Server listening on port ${process.env.PORT || 3000}`);
 });
