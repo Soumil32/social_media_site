@@ -16,7 +16,8 @@ export default  {
   methods: {
     logout() {
       localStorage.removeItem('token');
-      this.store.changeLoginStatus();
+      this.store.changeLoginStatus(false);
+      this.$router.push('/login') // redirect to login page
     }
   },
   computed: {

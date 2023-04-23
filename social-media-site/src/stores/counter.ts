@@ -19,8 +19,8 @@ export const userInfoStore = defineStore('userInfo', {
     isLoggedin: state => state._loggedIn,
   },
   actions: {
-    changeLoginStatus() {
-      this._loggedIn = !this._loggedIn
+    changeLoginStatus(status: boolean) {
+      this._loggedIn = status
     }
   },
 })

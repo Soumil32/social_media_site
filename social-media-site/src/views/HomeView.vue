@@ -1,7 +1,7 @@
 <template>
   <!-- main social media page. a list of the last 20 posts -->
   <div class="flex flex-col min-h-screen flex-grow flex-nowrap justify-start">
-    <div class="w-1/2 bg-white rounded overflow-hidden shadow-lg mx-auto mb-4 pl-2 pr-1" v-for="(post, i) in posts" :key="i">
+    <div class="lg:w-1/4 sm:w-1 bg-white rounded overflow-hidden shadow-lg mx-auto mb-4 pl-2 pr-1" v-for="(post, i) in posts.slice(0, 10)" :key="i">
       <div class="font-bold text-xl mb-2">{{post.title}} <!--suppress TypeScriptUnresolvedReference -->
         <div class="text-gray-400 text-sm">{{post.userName}}</div></div>
       <p class="text-gray-700 text-base mb-2 ">{{post.content}}</p>
