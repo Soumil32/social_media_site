@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import axios from "axios";
 
 let validToken;
-axios.post('http://localhost:3000/validate-token', {
+axios.post(`${import.meta.env.VITE_BACKEND_SERVER}/validate-token`, {
     headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
     }

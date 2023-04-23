@@ -30,7 +30,7 @@ export default {
       const headers = {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       };
-      axios.post('http://localhost:3000/create-post', {
+      axios.post(`${import.meta.env.VITE_BACKEND_SERVER}/create-post`, {
         title: title,
         content: content,
         headers
