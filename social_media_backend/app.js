@@ -18,7 +18,7 @@ app.use(cookieParser());
 
 // Configure CORS to allow requests from 'http://localhost:5173'
 app.use(cors({
-    origin: 'http://localhost:8000',
+    origin: 'http://localhost:5173',
     optionsSuccessStatus: 200 // some legacy browsers (e.g., IE11) choke on 204
 }));
 
@@ -103,6 +103,10 @@ app.post('/create-post', authenticateToken, async (req, res) => {
 
 app.post('/validate-token', authenticateToken, (req, res) => {
     res.status(200).json({message: 'Token valid'});
+});
+
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`Server listening on port ${process.env.PORT || 3000}`);
 });
 
 module.exports = app;
