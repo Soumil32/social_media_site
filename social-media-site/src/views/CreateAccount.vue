@@ -29,7 +29,7 @@ export default {
     createAccount() {
       const userName: String = this.userName;
       const password: String = this.password;
-      axios.post('http://localhost:3000/create-user', {
+      axios.post(`${import.meta.env.VITE_BACKEND_SERVER}create-user`, {
         userName: userName,
         password: password,
         accessCode: this.accessCode
