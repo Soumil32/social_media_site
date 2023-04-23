@@ -16,12 +16,7 @@ app.use(cookieParser());
 
 
 // Configure CORS to allow requests from 'http://localhost:5173'
-app.use(cors({
-    origin: (origin, callback) => {
-        callback(false, ['https://social-media-site-five.vercel.app', process.env.MY_LOCAL_IP])
-    },
-    optionsSuccessStatus: 200 // some legacy browsers (e.g., IE11) choke on 204
-}));
+app.use(cors());
 
 function authenticateToken(req, res, next) {
     let token;
