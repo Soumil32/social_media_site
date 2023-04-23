@@ -8,7 +8,7 @@ const cors = require('cors');
 const logger = require('morgan');
 const jwt = require('jsonwebtoken');
 const app = express();
-const client = new MongoClient(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+const client = new MongoClient(process.env.MONGO_URI);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -73,7 +73,13 @@ app.post('/create-user', async (req, res) => {
 app.post('/login', async (req, res) => {
     const allAccounts = client.db("social_media_demo").collection("accounts");
     const {userName, password} = req.body;
-    const hashedPassword = (await allAccounts.findOne({userName: userName})).password;
+    let hashedPassword;
+    allAccounts.findOne({userName: userName}).then((result) => {
+        hashedPassword = result.password;
+    }).catch((error) => {
+        console.log(error);
+        res.status(500).json({message: 'Internal server error'});
+    });
     bcrypt.compare(password, hashedPassword).then((result) => {
         console.log(result);
         if (!result) { res.status(401).json({message: 'Invalid credentials'});}
