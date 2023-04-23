@@ -80,6 +80,8 @@ app.post('/login', async (req, res) => {
         console.log(error);
         res.status(500).json({message: 'Internal server error'});
     });
+    console.log('hashed password', hashedPassword);
+    console.log('password', password)
     bcrypt.compare(password, hashedPassword).then((result) => {
         console.log(result);
         if (!result) { res.status(401).json({message: 'Invalid credentials'});}
