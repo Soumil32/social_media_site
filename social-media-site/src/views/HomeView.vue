@@ -11,7 +11,6 @@
 
 <script lang="ts">
 import axios from "axios";
-import * as process from "process";
 export default {
   name: "HomeView",
   data() {
