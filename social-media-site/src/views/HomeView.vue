@@ -30,7 +30,7 @@ export default {
     };
 
     // Make request to retrieve posts with authorization header
-    axios.post(`${process.env.BACKEND_SERVER}/get-posts`, { headers })
+    axios.post(`${import.meta.env.BACKEND_SERVER}/get-posts`, { headers })
       .then(response => {
         this.posts = response.data.posts;
       })
