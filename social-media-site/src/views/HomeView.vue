@@ -11,6 +11,7 @@
 
 <script lang="ts">
 import axios from "axios";
+import * as process from "process";
 export default {
   name: "HomeView",
   data() {
@@ -29,7 +30,7 @@ export default {
     };
 
     // Make request to retrieve posts with authorization header
-    axios.post('http://localhost:3000/get-posts', { headers })
+    axios.post(`${process.env.BACKEND_SERVER}/get-posts`, { headers })
       .then(response => {
         this.posts = response.data.posts;
       })
