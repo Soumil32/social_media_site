@@ -6,6 +6,9 @@
       <input type="text" id="userName" v-model="userName" />
       <label for="password">Password</label>
       <input type="password" id="password" v-model="password" />
+      <!-- create a input where the access code is entered -->
+      <label for="accessCode">Access Code</label>
+      <input type="text" id="accessCode" v-model="accessCode" />
       <button @click.prevent="createAccount">Create Account</button>
     </form>
   </div>
@@ -19,6 +22,7 @@ export default {
     return {
       userName: "",
       password: "",
+      accessCode: "",
     };
   },
   methods: {
@@ -27,7 +31,8 @@ export default {
       const password: String = this.password;
       axios.post('http://localhost:3000/create-user', {
         userName: userName,
-        password: password
+        password: password,
+        accessCode: this.accessCode
       }).catch((error) => {
         console.log(error);
       });
