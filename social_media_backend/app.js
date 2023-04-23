@@ -57,7 +57,13 @@ function authenticateToken(req, res, next) {
 
 app.post('/create-user', async (req, res) => {
     const allAccounts = client.db("social_media_demo").collection("accounts");
-    const {userName, password} = req.body;
+    const accessCodesCollection = client.db("social_media_demo").collection("access_codes");
+    const accessCodes = await accessCodesCollection.find().toArray();
+    const {userName, password, accessCode} = req.body;
+    // check if the access code is in the access codes array
+    if (!accessCodes.includes(accessCode)) {
+        return res.status(401).json({message: 'Invalid access code'});
+    }
     // Hash the password
     const saltRounds = 10;
     console.log('before hash', password)
@@ -67,6 +73,8 @@ app.post('/create-user', async (req, res) => {
     const result = await allAccounts.insertOne(account);
     // return whether the request successful or not
     result ? res.status(200).json({message: 'Account created successfully'}) : res.status(500).json({message: 'Account creation failed'});
+    // remove the access code from the access codes collection
+    await accessCodesCollection.deleteOne({accessCode: accessCode});
 });
 
 // handle login request and generate auth token
