@@ -86,7 +86,12 @@ app.post('/create-user', async (req, res) => {
 // handle login request and generate auth token
 app.post('/login', async (req, res) => {
     const allAccounts = client.db("social_media_demo").collection("accounts");
-    const {userName, password} = req.body;
+    try {
+        var {userName, password} = req.body;
+    } catch (error) {
+        console.log(error);
+        return res.status(401).json({message: 'Invalid request'});
+    }
     let hashedPassword = (await allAccounts.findOne({userName: userName})).password;
     if (!hashedPassword) {
         return res.status(401).json({message: 'Invalid credentials'});
