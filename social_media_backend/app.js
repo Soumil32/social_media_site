@@ -92,7 +92,7 @@ app.post('/login', async (req, res) => {
         console.log(error);
         return res.status(401).json({message: 'Invalid request'});
     }
-    let hashedPassword = (await allAccounts.findOne({userName: userName})).password;
+    let hashedPassword = (await allAccounts.findOne({userName: userName})).password || null;
     if (!hashedPassword) {
         return res.status(401).json({message: 'Invalid credentials'});
     }
