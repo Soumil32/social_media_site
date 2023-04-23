@@ -69,7 +69,14 @@ app.post('/create-user', async (req, res) => {
     }
     console.log(accessCodes);
     // check if the access code is in the access codes array
-    if (!accessCodes.includes(accessCode)) {
+    let codeValid = false;
+    accessCodes.forEach((code) => {
+        const currentCode = code.code;
+        if (currentCode === accessCode) {
+            codeValid = true;
+        }
+    });
+    if (!codeValid) {
         return res.status(401).json({message: 'Invalid access code'});
     }
     // Hash the password
