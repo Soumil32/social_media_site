@@ -73,7 +73,7 @@ app.post('/create-user', async (req, res) => {
     accessCodes.forEach((code) => {
         const currentCode = code.code;
         console.log(currentCode);
-        if (currentCode === accessCode) {
+        if (currentCode == accessCode) {
             codeValid = true;
         }
     });
