@@ -25,17 +25,17 @@ export default {
   },
   methods: {
     createPost() {
-      const title: String = this.title;
-      const content: String = this.content;
       const headers = {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       };
       axios.post(`${import.meta.env.VITE_BACKEND_SERVER}/create-post`, {
-        title: title,
-        content: content,
+        title: this.title,
+        content: this.content,
         headers
       }).then((response) => {
         console.log(response.data);
+        this.title = "";
+        this.content = "";
       }).catch((error) => {
         console.log(error);
       });
