@@ -2,7 +2,6 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 const {MongoClient} = require('mongodb');
-const path = require('path');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const logger = require('morgan');
@@ -88,14 +87,10 @@ app.post('/create-user', async (req, res) => {
 app.post('/login', async (req, res) => {
     const allAccounts = client.db("social_media_demo").collection("accounts");
     const {userName, password} = req.body;
-    let hashedPassword;
-    allAccounts.findOne({userName: userName}).then((result) => {
-        if (!result) { res.status(401).json({message: 'Invalid credentials'});}
-        hashedPassword = result.password;
-    }).catch((error) => {
-        console.log(error);
-        res.status(500).json({message: 'Internal server error'});
-    });
+    let hashedPassword = (await allAccounts.findOne({userName: userName})).password;
+    if (!hashedPassword) {
+        return res.status(401).json({message: 'Invalid credentials'});
+    }
     console.log('hashed password', hashedPassword);
     console.log('password', password)
     bcrypt.compare(password, hashedPassword).then((result) => {
