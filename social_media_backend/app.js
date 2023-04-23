@@ -60,6 +60,11 @@ app.post('/create-user', async (req, res) => {
     const accessCodesCollection = client.db("social_media_demo").collection("access_codes");
     const accessCodes = await accessCodesCollection.find().toArray();
     const {userName, password, accessCode} = req.body;
+    // check if the username already exists
+    const existingAccount = await allAccounts.findOne({userName: userName});
+    if (existingAccount) {
+        return res.status(401).json({message: 'Username already exists'});
+    }
     // check if the access code is in the access codes array
     if (!accessCodes.includes(accessCode)) {
         return res.status(401).json({message: 'Invalid access code'});
