@@ -2,19 +2,8 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import axios from "axios";
 
-let validToken;
-axios.post(`${import.meta.env.VITE_BACKEND_SERVER}/validate-token`, {
-    headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
-    }
-}).then((response) => {
-    validToken = true; // if the server responds with a 200 status code, the token is valid
-}).catch((error) => {
-    validToken = false; // if the server responds with a 401 status code, the token is invalid
-})
-
 export const userInfoStore = defineStore('userInfo', {
-  state: () => ({ _loggedIn: validToken }),
+  state: () => ({ _loggedIn: false }),
     getters: {
     isLoggedin: state => state._loggedIn,
   },

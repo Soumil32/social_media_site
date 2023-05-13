@@ -58,16 +58,13 @@ app.post('/create-user', async (req, res) => {
     const {userName, password, accessCode} = req.body;
     // check if the username already exists
     const existingAccount = await allAccounts.findOne({userName: userName});
-    console.log(existingAccount);
     if (existingAccount) {
         return res.status(401).json({message: 'Username already exists'});
     }
-    console.log(accessCodes);
     // check if the access code is in the access codes array
     let codeValid = false;
     accessCodes.forEach((code) => {
         const currentCode = code.code;
-        console.log(currentCode);
         if (currentCode == accessCode) {
             codeValid = true;
         }
@@ -77,9 +74,7 @@ app.post('/create-user', async (req, res) => {
     }
     // Hash the password
     const saltRounds = 10;
-    console.log('before hash', password)
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    console.log('after hash', hashedPassword)
     const account = {userName, password: hashedPassword};
     const result = await allAccounts.insertOne(account);
     // return whether the request successful or not
@@ -97,18 +92,14 @@ app.post('/login', async (req, res) => {
         console.log(error);
         return res.status(401).json({message: 'Invalid request'});
     }
-    let hashedPassword;
-    allAccounts.findOne({userName: userName}).then((result) => {
-        hashedPassword = result.password;
-    }).catch((error) => {
-        console.log(error);
-        res.status(500).json({message: 'Internal server error'});
-    })
+    let hashedPassword = '';
+    const result = await allAccounts.findOne({userName: userName});
+    if (!result) {
+        return res.status(401).json({message: 'Invalid username'});
+    }
+    hashedPassword = result.password;
 
-    console.log('hashed password', hashedPassword);
-    console.log('password', password)
     bcrypt.compare(password, hashedPassword).then((result) => {
-        console.log(result);
         if (!result) { res.status(401).json({message: 'Invalid credentials'});}
     }).catch((error) => {
         console.log(error);
@@ -136,6 +127,17 @@ app.post('/create-post', authenticateToken, async (req, res) => {
 
 app.post('/validate-token', authenticateToken, (req, res) => {
     res.status(200).json({message: 'Token valid'});
+});
+
+app.post('/get-user-profile', authenticateToken, (req, res) => {
+    const allAccounts = client.db("social_media_demo").collection("accounts");
+    const userName = req.user.userName;
+    allAccounts.findOne({userName: userName}).then((result) => {
+        res.status(200).json({message: 'User profile fetched successfully', profile: result});
+    }).catch((error) => {
+        console.log(error);
+        res.status(500).json({message: 'Internal server error'});
+    });
 });
 
 app.get('/verify-server', (req, res) => {

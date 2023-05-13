@@ -35,7 +35,6 @@ export default {
         userName: userName,
         password: password
       }).then((response) => {
-        console.log(response.data);
         this.userName = "";
         this.password = "";
         localStorage.setItem('token', response.data.token);

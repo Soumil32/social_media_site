@@ -6,6 +6,7 @@ const store = userInfoStore()
 <script lang="ts">
 
 import { userInfoStore } from "@/stores/counter";
+import axios from "axios";
 
 export default  {
   data() {
@@ -37,6 +38,21 @@ export default  {
           ]
       }
     }
+  },
+  beforeMount() {
+    const token = localStorage.getItem('token');
+    if(!token) {
+      this.store.changeLoginStatus(false);
+      return;
+    }
+    axios.post(`${import.meta.env.VITE_BACKEND_SERVER}/verify-token`, {
+      token: token
+    }).then((response) => {
+      console.log(response.data);
+      this.store.changeLoginStatus(true);
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 }
 </script>
